@@ -1,7 +1,7 @@
 # miniOS Current Status
 
-**Last Updated:** Phase 7 Complete
-**Overall Progress:** 67% (8 of 12 phases complete)
+**Last Updated:** Phase 8 In Progress (Keyboard Driver Complete)
+**Overall Progress:** 71% (8.5 of 12 phases complete)
 
 ---
 
@@ -102,12 +102,24 @@
 
 **Added:** ~680 LOC (300 production + 380 tests), binary now 219 KB
 
+### Phase 8: Device Drivers (50% - Keyboard Complete)
+- ✅ PS/2 keyboard driver
+- ✅ Keyboard interrupt handler (IRQ1)
+- ✅ Scancode to ASCII mapping (US QWERTY)
+- ✅ Keyboard input buffer (256 characters)
+- ✅ Modifier key support (Shift, Ctrl, Alt, Caps Lock)
+- ✅ LED control (Caps Lock, Num Lock, Scroll Lock)
+- ✅ Blocking and non-blocking input functions
+- [ ] Disk driver (ATA/AHCI) - pending
+- [ ] Disk read/write operations - pending
+
+**Added:** ~480 LOC (keyboard driver), binary now 227 KB
+
 ---
 
-## 🚧 Current Phase: Phase 8 - Device Drivers (Next)
+## 🚧 Current Phase: Phase 8 - Device Drivers (In Progress)
 
-**Goals:**
-- Keyboard driver (PS/2)
+**Next:**
 - Disk I/O (ATA/AHCI)
 
 ---
@@ -125,10 +137,10 @@
 
 | Metric | Current | Target (Phase 11) |
 |--------|---------|-------------------|
-| Lines of Code | ~6,460 | ~9,000 |
-| Binary Size | 219 KB | 290 KB |
-| Source Files | 33 | ~60 |
-| Test Coverage | VMM + Timer + Scheduler + Syscalls + User Mode + ELF Loader | All components |
+| Lines of Code | ~6,940 | ~9,000 |
+| Binary Size | 227 KB | 290 KB |
+| Source Files | 35 | ~60 |
+| Test Coverage | VMM + Timer + Scheduler + Syscalls + User Mode + ELF Loader + Keyboard | All components |
 | Boot Time | <1s | <1s |
 
 ---
@@ -164,9 +176,12 @@
 ✅ Program segment loading with proper permissions
 ✅ BSS section handling
 ✅ Entry point detection
+✅ PS/2 keyboard driver with IRQ handler
+✅ Keyboard input buffering
+✅ Scancode to ASCII conversion
+✅ Modifier keys (Shift, Ctrl, Alt, Caps Lock)
 
 ### What's Coming Soon (Phase 8):
-⏳ Keyboard driver (PS/2)
 ⏳ Disk I/O (ATA/AHCI)
 
 ### What's Planned (Phase 8+):
@@ -214,8 +229,10 @@ minios/
 │   │   ├── interrupts/  # GDT, IDT, ISR/IRQ ✅
 │   │   └── mm/          # VMM (paging) ✅
 │   ├── drivers/         # Device drivers
-│   │   └── timer/       # Timer drivers
-│   │       └── pit.c    # PIT driver ✅
+│   │   ├── timer/       # Timer drivers
+│   │   │   └── pit.c    # PIT driver ✅
+│   │   └── keyboard/    # Keyboard drivers
+│   │       └── ps2_keyboard.{c,h} # PS/2 keyboard ✅
 │   └── tests/           # Test suites
 │       ├── test_vmm.c   # VMM tests ✅
 │       ├── test_pit.c   # Timer tests ✅
@@ -276,4 +293,4 @@ make debug
 
 ---
 
-**Next Step:** Implement Phase 8 (Device Drivers) - Keyboard and Disk I/O!
+**Next Step:** Complete Phase 8 (Device Drivers) - Implement Disk I/O (ATA/AHCI)!

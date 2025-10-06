@@ -5,6 +5,10 @@
 // Declare serial_write from kernel
 extern void serial_write(const char *s);
 
+// External interrupt handlers
+extern void pit_irq_handler(void);
+extern void keyboard_irq_handler(void);
+
 #define IDT_ENTRIES 256
 
 static struct idt_entry idt[IDT_ENTRIES];
@@ -194,9 +198,6 @@ void isr_handler(struct registers *regs) {
     }
 }
 
-// Forward declaration of PIT IRQ handler
-extern void pit_irq_handler(void);
-
 // Common IRQ handler
 void irq_handler(struct registers *regs) {
     // Handle specific IRQs
@@ -205,8 +206,11 @@ void irq_handler(struct registers *regs) {
             pit_irq_handler();
             break;
 
+        case 33:  // IRQ1 - Keyboard
+            keyboard_irq_handler();
+            break;
+
         // Future IRQs will be handled here
-        // case 33: keyboard_irq_handler(); break;
         // etc.
 
         default:

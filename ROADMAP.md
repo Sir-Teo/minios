@@ -381,33 +381,43 @@ const char *elf_strerror(int error);
 
 ## Phase 8: Device Drivers
 
-**Status:** 📋 Planned  
-**Completion:** 0%
+**Status:** 🚧 In Progress (Keyboard Complete, Disk Pending)
+**Completion:** 50%
 
-### Goals:
-- [ ] Keyboard driver (PS/2)
-- [ ] Keyboard input buffer
-- [ ] Scancode to ASCII conversion
-- [ ] Mouse driver (PS/2) - optional
-- [ ] ATA/AHCI disk driver
-- [ ] Disk read/write operations
+### Implemented:
+- [x] PS/2 keyboard driver
+- [x] Keyboard interrupt handler (IRQ1)
+- [x] Scancode to ASCII mapping (US QWERTY layout)
+- [x] Keyboard input buffer (circular buffer, 256 characters)
+- [x] Modifier key support (Shift, Ctrl, Alt, Caps Lock)
+- [x] LED control (Caps Lock, Num Lock, Scroll Lock)
+- [x] Blocking and non-blocking getchar functions
+- [ ] Mouse driver (PS/2) - deferred to later phase
+- [ ] ATA/AHCI disk driver - pending
+- [ ] Disk read/write operations - pending
+- [ ] Tests for keyboard driver - pending
 
-### Key Functions Needed:
+### Key Functions Implemented:
 ```c
 void keyboard_init(void);
-char keyboard_getchar(void);
-void disk_init(void);
-int disk_read(uint64_t lba, void *buffer, size_t sectors);
-int disk_write(uint64_t lba, const void *buffer, size_t sectors);
+char keyboard_getchar(void);  // Non-blocking
+char keyboard_getchar_blocking(void);  // Blocking
+bool keyboard_has_data(void);
+void keyboard_clear_buffer(void);
+uint8_t keyboard_get_modifiers(void);
+void keyboard_set_leds(uint8_t leds);
+void keyboard_irq_handler(void);  // IRQ1 handler
 ```
 
-**Files to Create:**
-- `src/drivers/keyboard/ps2_keyboard.{c,h}`
-- `src/drivers/disk/ata.{c,h}` or `ahci.{c,h}`
+**Files Created:**
+- `src/drivers/keyboard/ps2_keyboard.{c,h}` - PS/2 keyboard driver (~480 LOC)
 
-**Tests:**
-- Read keyboard input
-- Disk read/write operations
+**Metrics:**
+- ~480 LOC (production code)
+- 0 LOC (test code - pending)
+- Binary size increased by ~8 KB (from 219 KB to 227 KB)
+
+**Note:** Disk driver implementation will complete Phase 8. Tests for keyboard will be added after interactive testing is possible.
 
 ---
 
@@ -512,7 +522,7 @@ typedef struct vfs_node {
 | 5     | ~3,720        | 95 KB       | + Syscalls ✅ |
 | 6     | ~5,780        | 194 KB      | + User Mode ✅ |
 | 7     | ~6,460        | 219 KB      | + ELF Loader ✅ |
-| 8     | ~7,200        | 250 KB      | + Drivers |
+| 8     | ~6,940        | 227 KB      | + Keyboard (50%) 🚧 |
 | 9-10  | ~8,000        | 260 KB      | + Filesystem |
 | 11    | ~9,000        | 290 KB      | + Shell |
 
@@ -529,12 +539,12 @@ Phase 4: Multitasking             ███████████████�
 Phase 5: System Calls             ████████████████████ 100%
 Phase 6: User Mode                ████████████████████ 100%
 Phase 7: ELF Loader               ████████████████████ 100%
-Phase 8: Device Drivers           ░░░░░░░░░░░░░░░░░░░░   0%
+Phase 8: Device Drivers           ██████████░░░░░░░░░░  50%
 Phase 9: VFS                      ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 10: Filesystem              ░░░░░░░░░░░░░░░░░░░░   0%
 Phase 11: Shell                   ░░░░░░░░░░░░░░░░░░░░   0%
 
-Overall Progress: █████████████░░░░░░░ 66.7%
+Overall Progress: ██████████████░░░░░░ 70.8%
 ```
 
-**Next Up:** Phase 8 - Device Drivers (Keyboard & Disk I/O)
+**Next Up:** Phase 8 - Complete Device Drivers (Disk I/O)

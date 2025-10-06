@@ -46,6 +46,9 @@ extern void usermode_init(void);
 // ELF loader
 extern void elf_init(void);
 
+// Keyboard driver
+extern void keyboard_init(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
@@ -324,6 +327,10 @@ void kmain(void) {
     // Run ELF loader tests
     serial_write("\n");
     test_elf_run_all();
+
+    // Initialize keyboard
+    serial_write("\n");
+    keyboard_init();
 
     // Enable scheduler (will start on next timer tick)
     serial_write("\n");
