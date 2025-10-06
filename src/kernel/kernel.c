@@ -52,6 +52,10 @@ extern void keyboard_init(void);
 // Disk driver
 extern void ata_init(void);
 
+// Virtual File System
+extern void vfs_init(void);
+extern void tmpfs_init(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
@@ -60,6 +64,7 @@ extern void run_syscall_tests(void);
 extern void test_elf_run_all(void);
 extern void run_usermode_tests(void);
 extern void test_ata_run_all(void);
+extern void test_vfs_run_all(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -343,6 +348,18 @@ void kmain(void) {
     // Run disk driver tests
     serial_write("\n");
     test_ata_run_all();
+
+    // Initialize VFS
+    serial_write("\n");
+    vfs_init();
+
+    // Initialize tmpfs (temporary in-memory filesystem)
+    serial_write("\n");
+    tmpfs_init();
+
+    // Run VFS tests
+    serial_write("\n");
+    test_vfs_run_all();
 
     // Enable scheduler (will start on next timer tick)
     serial_write("\n");
