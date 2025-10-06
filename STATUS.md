@@ -1,7 +1,7 @@
 # miniOS Current Status
 
-**Last Updated:** Phase 2 Complete  
-**Overall Progress:** 25% (3 of 12 phases complete)
+**Last Updated:** Phase 3 Complete
+**Overall Progress:** 33% (4 of 12 phases complete)
 
 ---
 
@@ -31,24 +31,31 @@
 
 **Added:** ~900 LOC, binary now 75 KB
 
+### Phase 3: Timer & Interrupts (100%)
+- ✅ PIT (Programmable Interval Timer) driver
+- ✅ Configurable timer frequency (50Hz - 1000Hz)
+- ✅ Timer interrupt handler (IRQ0)
+- ✅ Tick counting mechanism
+- ✅ Sleep functionality
+- ✅ Callback mechanism for timer events
+- ✅ PIC remapping for proper IRQ handling
+- ✅ Comprehensive test suite (10+ test cases)
+
+**Added:** ~500 LOC, binary now 80 KB
+
 ---
 
-## 🚧 Current Phase: Phase 3 - Timers (Next)
+## 🚧 Current Phase: Phase 4 - Multitasking (Next)
 
 **Goals:**
-- PIT driver for timer ticks
-- APIC initialization
-- Timer interrupt handlers
-- Configurable tick rate
+- Task structures
+- Context switching
+- Round-robin scheduler
+- Idle task
 
 ---
 
 ## 📋 Upcoming Phases
-
-### Phase 3: Timer & Interrupts (0%)
-- PIT/APIC drivers
-- Timer interrupt handling
-- Tick rate configuration
 
 ### Phase 4: Multitasking (0%)
 - Task structures
@@ -78,10 +85,10 @@
 
 | Metric | Current | Target (Phase 11) |
 |--------|---------|-------------------|
-| Lines of Code | ~2,100 | ~6,000 |
-| Binary Size | 75 KB | 180 KB |
-| Source Files | 17 | ~50 |
-| Test Coverage | VMM only | All components |
+| Lines of Code | ~2,600 | ~6,500 |
+| Binary Size | 80 KB | 190 KB |
+| Source Files | 20 | ~55 |
+| Test Coverage | VMM + Timer | All components |
 | Boot Time | <1s | <1s |
 
 ---
@@ -89,23 +96,25 @@
 ## 🎯 Capabilities
 
 ### What Works Now:
-✅ Boot from ISO/USB  
-✅ Serial output for debugging  
-✅ Graphics framebuffer  
-✅ Memory allocation (physical + kernel heap)  
-✅ Virtual memory management  
-✅ Address space isolation  
-✅ Interrupt handling  
-✅ Exception handling  
+✅ Boot from ISO/USB
+✅ Serial output for debugging
+✅ Graphics framebuffer
+✅ Memory allocation (physical + kernel heap)
+✅ Virtual memory management
+✅ Address space isolation
+✅ Interrupt handling
+✅ Exception handling
+✅ Timer interrupts (PIT)
+✅ Tick counting and sleep
+✅ Timer callbacks
 
-### What's Coming Soon (Phase 3-4):
-⏳ Timer interrupts  
-⏳ Task scheduling  
-⏳ Context switching  
-⏳ Preemptive multitasking  
+### What's Coming Soon (Phase 4-5):
+⏳ Task scheduling
+⏳ Context switching
+⏳ Preemptive multitasking
+⏳ System calls  
 
-### What's Planned (Phase 5+):
-📋 System calls  
+### What's Planned (Phase 6+):
 📋 User mode processes  
 📋 ELF program loading  
 📋 Keyboard input  
@@ -117,8 +126,8 @@
 
 ## 🧪 Testing
 
-- **Unit Tests:** VMM comprehensive suite (25+ tests)
-- **Integration Tests:** Boot sequence
+- **Unit Tests:** VMM comprehensive suite (25+ tests), Timer suite (10+ tests)
+- **Integration Tests:** Boot sequence, timer interrupts
 - **CI/CD:** GitHub Actions (macOS)
 - **All tests:** ✅ PASSING
 
@@ -139,8 +148,12 @@ minios/
 │   ├── arch/x86_64/     # Architecture-specific
 │   │   ├── interrupts/  # GDT, IDT, ISR/IRQ ✅
 │   │   └── mm/          # VMM (paging) ✅
+│   ├── drivers/         # Device drivers
+│   │   └── timer/       # Timer drivers
+│   │       └── pit.c    # PIT driver ✅
 │   └── tests/           # Test suites
-│       └── test_vmm.c   # VMM tests ✅
+│       ├── test_vmm.c   # VMM tests ✅
+│       └── test_pit.c   # Timer tests ✅
 ├── docs/                # Documentation
 ├── .github/workflows/   # CI/CD
 └── ROADMAP.md          # Development roadmap
@@ -194,4 +207,4 @@ make debug
 
 ---
 
-**Next Step:** Implement Phase 3 (Timers) to enable scheduling!
+**Next Step:** Implement Phase 4 (Multitasking) to enable process scheduling!

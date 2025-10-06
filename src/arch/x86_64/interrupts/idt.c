@@ -194,8 +194,26 @@ void isr_handler(struct registers *regs) {
     }
 }
 
+// Forward declaration of PIT IRQ handler
+extern void pit_irq_handler(void);
+
 // Common IRQ handler
 void irq_handler(struct registers *regs) {
+    // Handle specific IRQs
+    switch (regs->int_no) {
+        case 32:  // IRQ0 - Timer (PIT)
+            pit_irq_handler();
+            break;
+
+        // Future IRQs will be handled here
+        // case 33: keyboard_irq_handler(); break;
+        // etc.
+
+        default:
+            // Unknown IRQ - just acknowledge it
+            break;
+    }
+
     // Send EOI to PIC
     if (regs->int_no >= 40) {
         // Send to slave PIC

@@ -29,8 +29,12 @@ extern void kmalloc_init(void);
 extern uint64_t pmm_get_free_memory(void);
 extern void vmm_init(void);
 
+// Timer
+extern void pit_init(uint32_t frequency);
+
 // Tests
 extern void run_vmm_tests(void);
+extern void run_pit_tests(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -270,6 +274,10 @@ void kmain(void) {
     // Run VMM tests
     serial_write("\n");
     run_vmm_tests();
+
+    // Run PIT tests (they initialize the timer internally)
+    serial_write("\n");
+    run_pit_tests();
 
     // Initialize framebuffer
     serial_write("[VIDEO] Initializing framebuffer...\n");
