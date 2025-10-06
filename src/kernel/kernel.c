@@ -32,9 +32,27 @@ extern void vmm_init(void);
 // Timer
 extern void pit_init(uint32_t frequency);
 
+// Scheduler
+extern void task_init(void);
+extern void sched_init(void);
+extern void sched_set_enabled(bool enabled);
+
+// System calls
+extern void syscall_init(void);
+
+// User mode
+extern void usermode_init(void);
+
+// ELF loader
+extern void elf_init(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
+extern void run_sched_tests(void);
+extern void run_syscall_tests(void);
+extern void test_elf_run_all(void);
+extern void run_usermode_tests(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -106,7 +124,7 @@ void serial_init(void) {
     outb(SERIAL_PORT_COM1 + 1, 0x01);  // Enable interrupts
 }
 
-static void serial_putc(char c) {
+void serial_putc(char c) {
     // Wait for transmit buffer to be empty
     while (!serial_tx_ready()) {
         __asm__ volatile ("pause");
@@ -121,13 +139,6 @@ void serial_write(const char *s) {
         }
         serial_putc(*s);
     }
-}
-
-/* Simple printf-like function for kernel debugging */
-void kprintf(const char *fmt, ...) {
-    // For now, just output the format string
-    // TODO: Implement full printf with va_args
-    serial_write(fmt);
 }
 
 /* ---------- Halt and catch fire ---------- */
@@ -278,6 +289,46 @@ void kmain(void) {
     // Run PIT tests (they initialize the timer internally)
     serial_write("\n");
     run_pit_tests();
+
+    // Initialize task subsystem
+    serial_write("\n");
+    task_init();
+
+    // Initialize scheduler
+    sched_init();
+
+    // Run scheduler tests
+    serial_write("\n");
+    run_sched_tests();
+
+    // Initialize system calls
+    serial_write("\n");
+    syscall_init();
+
+    // Run syscall tests
+    serial_write("\n");
+    run_syscall_tests();
+
+    // Initialize user mode
+    serial_write("\n");
+    usermode_init();
+
+    // Run user mode tests
+    serial_write("\n");
+    run_usermode_tests();
+
+    // Initialize ELF loader
+    serial_write("\n");
+    elf_init();
+
+    // Run ELF loader tests
+    serial_write("\n");
+    test_elf_run_all();
+
+    // Enable scheduler (will start on next timer tick)
+    serial_write("\n");
+    serial_write("[KERNEL] Enabling multitasking...\n");
+    sched_set_enabled(true);
 
     // Initialize framebuffer
     serial_write("[VIDEO] Initializing framebuffer...\n");

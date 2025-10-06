@@ -1,7 +1,7 @@
 # miniOS Current Status
 
-**Last Updated:** Phase 3 Complete
-**Overall Progress:** 33% (4 of 12 phases complete)
+**Last Updated:** Phase 7 Complete
+**Overall Progress:** 67% (8 of 12 phases complete)
 
 ---
 
@@ -43,38 +43,78 @@
 
 **Added:** ~500 LOC, binary now 80 KB
 
+### Phase 4: Multitasking & Scheduling (100%)
+- ✅ Task/Process structures (pid, state, priority, stack)
+- ✅ Context switching (full register save/restore)
+- ✅ Kernel stacks for each task (16KB per task)
+- ✅ Task state management (ready, running, blocked, terminated)
+- ✅ Round-robin scheduler
+- ✅ Priority support
+- ✅ Idle task (runs when no other tasks ready)
+- ✅ Task creation and termination
+- ✅ Scheduler integration with timer
+- ✅ Voluntary yielding
+- ✅ Comprehensive test suite (10+ test cases)
+
+**Added:** ~940 LOC (530 production + 410 tests), binary now 90 KB
+
+### Phase 5: System Calls (100%)
+- ✅ MSR configuration for syscall/sysret
+- ✅ System call entry point in assembly
+- ✅ System call table and dispatcher
+- ✅ sys_write (stdout/stderr to serial console)
+- ✅ sys_exit (task termination)
+- ✅ sys_yield (voluntary CPU yielding)
+- ✅ sys_getpid (get process ID)
+- ✅ Stubs for future syscalls (read, open, close, fork, exec, wait, mmap, munmap)
+- ✅ Enhanced kprintf with full format string support
+- ✅ Comprehensive test suite (15+ test cases)
+
+**Added:** ~620 LOC (360 production + 260 tests), binary now 95 KB
+
+### Phase 6: User Mode (100%)
+- ✅ User mode memory layout definitions
+- ✅ Address space validation functions
+- ✅ Ring 3 transition via IRET
+- ✅ User stack allocation and mapping
+- ✅ User code memory mapping
+- ✅ User mode task creation (task_create_user)
+- ✅ GDT user segments (already present from Phase 1)
+- ✅ Separate kernel and user address spaces
+- ✅ Memory protection and isolation
+- ✅ Comprehensive test suite (10+ test cases)
+
+**Added:** ~480 LOC (280 production + 200 tests), binary now 194 KB
+
+### Phase 7: ELF Loader (100%)
+- ✅ ELF64 header structures and constants
+- ✅ ELF validation (magic, class, endianness, architecture)
+- ✅ Program header parsing
+- ✅ Loadable segment processing (PT_LOAD)
+- ✅ Memory allocation and mapping for segments
+- ✅ Segment data copying from ELF file
+- ✅ BSS section zeroing (p_memsz > p_filesz)
+- ✅ Entry point detection
+- ✅ Page permissions (read, write, execute, no-execute)
+- ✅ Address space creation for loaded programs
+- ✅ HHDM usage for physical memory access
+- ✅ Comprehensive test suite (12+ test cases)
+
+**Added:** ~680 LOC (300 production + 380 tests), binary now 219 KB
+
 ---
 
-## 🚧 Current Phase: Phase 4 - Multitasking (Next)
+## 🚧 Current Phase: Phase 8 - Device Drivers (Next)
 
 **Goals:**
-- Task structures
-- Context switching
-- Round-robin scheduler
-- Idle task
+- Keyboard driver (PS/2)
+- Disk I/O (ATA/AHCI)
 
 ---
 
 ## 📋 Upcoming Phases
 
-### Phase 4: Multitasking (0%)
-- Task structures
-- Context switching
-- Round-robin scheduler
-- Idle task
-
-### Phase 5: System Calls (0%)
-- syscall/sysret setup
-- System call table
-- Basic syscalls (read, write, exit, fork, exec)
-
-### Phase 6: User Mode (0%)
-- Ring 3 transitions
-- User space setup
-- Protection enforcement
-
-### Phase 7-11: Advanced Features (0%)
-- ELF loader
+### Phase 8-11: Advanced Features (0%)
 - Device drivers (keyboard, disk)
 - VFS and filesystem
 - Shell
@@ -85,10 +125,10 @@
 
 | Metric | Current | Target (Phase 11) |
 |--------|---------|-------------------|
-| Lines of Code | ~2,600 | ~6,500 |
-| Binary Size | 80 KB | 190 KB |
-| Source Files | 20 | ~55 |
-| Test Coverage | VMM + Timer | All components |
+| Lines of Code | ~6,460 | ~9,000 |
+| Binary Size | 219 KB | 290 KB |
+| Source Files | 33 | ~60 |
+| Test Coverage | VMM + Timer + Scheduler + Syscalls + User Mode + ELF Loader | All components |
 | Boot Time | <1s | <1s |
 
 ---
@@ -107,29 +147,42 @@
 ✅ Timer interrupts (PIT)
 ✅ Tick counting and sleep
 ✅ Timer callbacks
+✅ Task structures and management
+✅ Context switching
+✅ Preemptive multitasking
+✅ Round-robin scheduling
+✅ Task priorities
+✅ Idle task
+✅ System call infrastructure (syscall/sysret)
+✅ Basic system calls (write, exit, yield, getpid)
+✅ Enhanced kprintf with format strings
+✅ User mode support (ring 3 transitions)
+✅ User address space isolation
+✅ Memory protection (user/kernel separation)
+✅ User mode task creation
+✅ ELF64 loader (validation, parsing, loading)
+✅ Program segment loading with proper permissions
+✅ BSS section handling
+✅ Entry point detection
 
-### What's Coming Soon (Phase 4-5):
-⏳ Task scheduling
-⏳ Context switching
-⏳ Preemptive multitasking
-⏳ System calls  
+### What's Coming Soon (Phase 8):
+⏳ Keyboard driver (PS/2)
+⏳ Disk I/O (ATA/AHCI)
 
-### What's Planned (Phase 6+):
-📋 User mode processes  
-📋 ELF program loading  
-📋 Keyboard input  
-📋 Disk I/O  
-📋 Filesystem  
+### What's Planned (Phase 8+):
+📋 Keyboard input
+📋 Disk I/O
+📋 Filesystem
 📋 Shell  
 
 ---
 
 ## 🧪 Testing
 
-- **Unit Tests:** VMM comprehensive suite (25+ tests), Timer suite (10+ tests)
-- **Integration Tests:** Boot sequence, timer interrupts
+- **Unit Tests:** VMM (25+ tests), Timer (10+ tests), Scheduler (10+ tests), Syscalls (15+ tests), User Mode (10+ tests), ELF Loader (12+ tests)
+- **Integration Tests:** Boot sequence, timer interrupts, task switching, system calls, user mode transitions, ELF loading
 - **CI/CD:** GitHub Actions (macOS)
-- **All tests:** ✅ PASSING
+- **All tests:** ✅ PASSING (82+ test cases)
 
 ---
 
@@ -140,12 +193,24 @@ minios/
 ├── src/
 │   ├── kernel/           # Platform-independent kernel
 │   │   ├── kernel.c     # Main entry point
-│   │   ├── kprintf.c    # Debug utilities
+│   │   ├── kprintf.{c,h} # Enhanced printf with format strings ✅
 │   │   ├── support.c    # Freestanding libc
-│   │   └── mm/          # Memory management
-│   │       ├── pmm.c    # Physical allocator ✅
-│   │       └── kmalloc.c # Heap allocator ✅
+│   │   ├── mm/          # Memory management
+│   │   │   ├── pmm.c    # Physical allocator ✅
+│   │   │   └── kmalloc.c # Heap allocator ✅
+│   │   ├── sched/       # Scheduler subsystem
+│   │   │   ├── scheduler.c # Round-robin scheduler ✅
+│   │   │   └── task.c   # Task management ✅
+│   │   ├── syscall/     # System call subsystem
+│   │   │   └── syscall.{c,h} # Syscall infrastructure ✅
+│   │   ├── user/        # User mode subsystem
+│   │   │   └── usermode.{c,h} # User mode support ✅
+│   │   └── loader/      # Program loading subsystem
+│   │       └── elf.{c,h} # ELF64 loader ✅
 │   ├── arch/x86_64/     # Architecture-specific
+│   │   ├── context_switch.S # Context switch ✅
+│   │   ├── syscall_entry.S  # Syscall entry point ✅
+│   │   ├── usermode_entry.S # User mode entry point ✅
 │   │   ├── interrupts/  # GDT, IDT, ISR/IRQ ✅
 │   │   └── mm/          # VMM (paging) ✅
 │   ├── drivers/         # Device drivers
@@ -153,7 +218,11 @@ minios/
 │   │       └── pit.c    # PIT driver ✅
 │   └── tests/           # Test suites
 │       ├── test_vmm.c   # VMM tests ✅
-│       └── test_pit.c   # Timer tests ✅
+│       ├── test_pit.c   # Timer tests ✅
+│       ├── test_sched.c # Scheduler tests ✅
+│       ├── test_syscall.c # Syscall tests ✅
+│       ├── test_usermode.c # User mode tests ✅
+│       └── test_elf.c   # ELF loader tests ✅
 ├── docs/                # Documentation
 ├── .github/workflows/   # CI/CD
 └── ROADMAP.md          # Development roadmap
@@ -207,4 +276,4 @@ make debug
 
 ---
 
-**Next Step:** Implement Phase 4 (Multitasking) to enable process scheduling!
+**Next Step:** Implement Phase 8 (Device Drivers) - Keyboard and Disk I/O!

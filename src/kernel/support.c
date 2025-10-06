@@ -166,3 +166,32 @@ int strncmp(const char *s1, const char *s2, size_t n) {
     }
     return 0;
 }
+
+/**
+ * strstr - Find substring in string
+ * @haystack: String to search in
+ * @needle: Substring to search for
+ *
+ * Returns: Pointer to first occurrence of needle in haystack, or NULL if not found
+ */
+char *strstr(const char *haystack, const char *needle) {
+    if (!*needle) {
+        return (char *)haystack;
+    }
+
+    for (const char *h = haystack; *h; h++) {
+        const char *h_tmp = h;
+        const char *n_tmp = needle;
+
+        while (*h_tmp && *n_tmp && (*h_tmp == *n_tmp)) {
+            h_tmp++;
+            n_tmp++;
+        }
+
+        if (!*n_tmp) {
+            return (char *)h;
+        }
+    }
+
+    return NULL;
+}

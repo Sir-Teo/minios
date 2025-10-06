@@ -34,3 +34,4 @@ test_output/
 # Debug files
 *.map
 *.sym
+third_party/limine/

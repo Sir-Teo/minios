@@ -1,6 +1,7 @@
 #include "pit.h"
 #include <stdint.h>
 #include <stddef.h>
+#include <stdbool.h>
 
 // Declare serial_write for debugging
 extern void serial_write(const char *s);
@@ -151,6 +152,10 @@ void pit_set_callback(pit_callback_t callback) {
     user_callback = callback;
 }
 
+// Forward declaration for scheduler
+extern void schedule(void);
+extern bool sched_is_enabled(void);
+
 /**
  * PIT IRQ handler (called from the IRQ0 handler in idt.c).
  * This function is called on every timer tick.
@@ -161,6 +166,11 @@ void pit_irq_handler(void) {
     // Call user callback if set
     if (user_callback != NULL) {
         user_callback();
+    }
+
+    // Call scheduler if enabled
+    if (sched_is_enabled()) {
+        schedule();
     }
 
     // Note: EOI (End of Interrupt) is sent by the common irq_handler in idt.c
