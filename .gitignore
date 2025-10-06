@@ -1,0 +1,36 @@
+# macOS specific
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+bin/
+obj/
+*.o
+*.d
+*.elf
+
+# ISO and disk images
+iso_root/
+image.iso
+image.hdd
+
+# Limine build artifacts
+third_party/limine/build/
+
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.clangd/
+compile_commands.json
+
+# Test artifacts
+test_output/
+*.log
+
+# Debug files
+*.map
+*.sym

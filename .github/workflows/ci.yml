@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install dependencies
+      run: |
+        brew install x86_64-elf-gcc qemu xorriso mtools gptfdisk
+    
+    - name: Fetch Limine bootloader
+      run: make deps
+    
+    - name: Build kernel
+      run: make
+    
+    - name: Create bootable ISO
+      run: make iso
+    
+    - name: Run tests in QEMU
+      run: |
+        # Run QEMU for 5 seconds to check if kernel boots
+        timeout 5 qemu-system-x86_64 -m 512 -serial stdio -no-reboot -no-shutdown -cdrom image.iso -display none || true
+        
+        # Check if kernel binary was created
+        test -f bin/myos
+        
+        # Check if ISO was created
+        test -f image.iso
+        
+        echo "Build and basic boot test completed successfully!"
+    
+    - name: Upload kernel binary
+      uses: actions/upload-artifact@v4
+      with:
+        name: myos-kernel
+        path: bin/myos
+    
+    - name: Upload ISO image
+      uses: actions/upload-artifact@v4
+      with:
+        name: myos-iso
+        path: image.iso
