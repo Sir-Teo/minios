@@ -56,6 +56,9 @@ extern void ata_init(void);
 extern void vfs_init(void);
 extern void tmpfs_init(void);
 
+// SimpleFS
+extern void sfs_init(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
@@ -65,6 +68,7 @@ extern void test_elf_run_all(void);
 extern void run_usermode_tests(void);
 extern void test_ata_run_all(void);
 extern void test_vfs_run_all(void);
+extern void test_simplefs_run_all(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -360,6 +364,14 @@ void kmain(void) {
     // Run VFS tests
     serial_write("\n");
     test_vfs_run_all();
+
+    // Initialize SimpleFS
+    serial_write("\n");
+    sfs_init();
+
+    // Run SimpleFS tests
+    serial_write("\n");
+    test_simplefs_run_all();
 
     // Enable scheduler (will start on next timer tick)
     serial_write("\n");
