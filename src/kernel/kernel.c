@@ -27,6 +27,10 @@ extern void idt_init(void);
 extern void pmm_init(void);
 extern void kmalloc_init(void);
 extern uint64_t pmm_get_free_memory(void);
+extern void vmm_init(void);
+
+// Tests
+extern void run_vmm_tests(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -259,6 +263,13 @@ void kmain(void) {
     serial_write("[MEM] Free memory: ");
     serial_write_dec(pmm_get_free_memory() / 1024 / 1024);
     serial_write(" MiB\n");
+
+    // Initialize virtual memory manager
+    vmm_init();
+
+    // Run VMM tests
+    serial_write("\n");
+    run_vmm_tests();
 
     // Initialize framebuffer
     serial_write("[VIDEO] Initializing framebuffer...\n");

@@ -15,11 +15,12 @@ BIN    := bin/$(OUTPUT)
 # Sources (organized by subsystem)
 KERNEL_SRC := $(wildcard src/kernel/*.c) $(wildcard src/kernel/*/*.c)
 ARCH_SRC   := $(wildcard src/arch/x86_64/*.c) $(wildcard src/arch/x86_64/*.S) \
-              $(wildcard src/arch/x86_64/*/*.c) $(wildcard src/arch/x86_64/*/*.S)
+              $(wildcard src/arch/x86_64/*/*.c) $(wildcard src/arch/x86_64/*/*.S) \
+              $(wildcard src/arch/x86_64/*/*/*.c) $(wildcard src/arch/x86_64/*/*/*.S)
 DRIVERS_SRC := $(wildcard src/drivers/*.c)
 TEST_SRC    := $(wildcard src/tests/*.c)
 
-SRC := $(KERNEL_SRC) $(ARCH_SRC) $(DRIVERS_SRC)
+SRC := $(KERNEL_SRC) $(ARCH_SRC) $(DRIVERS_SRC) $(TEST_SRC)
 
 # Objects
 OBJ := $(patsubst src/%.c,obj/%.o,$(filter %.c,$(SRC))) \

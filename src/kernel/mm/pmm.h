@@ -5,7 +5,9 @@
 #include <stddef.h>
 
 // Page size (4 KiB)
+#ifndef PAGE_SIZE
 #define PAGE_SIZE 4096
+#endif
 
 // Initialize physical memory manager
 void pmm_init(void);
