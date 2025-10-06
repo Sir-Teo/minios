@@ -49,6 +49,9 @@ extern void elf_init(void);
 // Keyboard driver
 extern void keyboard_init(void);
 
+// Disk driver
+extern void ata_init(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
@@ -56,6 +59,7 @@ extern void run_sched_tests(void);
 extern void run_syscall_tests(void);
 extern void test_elf_run_all(void);
 extern void run_usermode_tests(void);
+extern void test_ata_run_all(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -331,6 +335,14 @@ void kmain(void) {
     // Initialize keyboard
     serial_write("\n");
     keyboard_init();
+
+    // Initialize disk driver
+    serial_write("\n");
+    ata_init();
+
+    // Run disk driver tests
+    serial_write("\n");
+    test_ata_run_all();
 
     // Enable scheduler (will start on next timer tick)
     serial_write("\n");
