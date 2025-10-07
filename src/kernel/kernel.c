@@ -59,6 +59,10 @@ extern void tmpfs_init(void);
 // SimpleFS
 extern void sfs_init(void);
 
+// Shell
+extern void shell_init(void);
+extern void shell_run(void);
+
 // Tests
 extern void run_vmm_tests(void);
 extern void run_pit_tests(void);
@@ -69,6 +73,7 @@ extern void run_usermode_tests(void);
 extern void test_ata_run_all(void);
 extern void test_vfs_run_all(void);
 extern void test_simplefs_run_all(void);
+extern void test_shell_run_all(void);
 
 /* ---------- Limine boot protocol requests (API revision 3) ---------- */
 
@@ -373,6 +378,14 @@ void kmain(void) {
     serial_write("\n");
     test_simplefs_run_all();
 
+    // Initialize shell
+    serial_write("\n");
+    shell_init();
+
+    // Run shell tests
+    serial_write("\n");
+    test_shell_run_all();
+
     // Enable scheduler (will start on next timer tick)
     serial_write("\n");
     serial_write("[KERNEL] Enabling multitasking...\n");
@@ -403,17 +416,13 @@ void kmain(void) {
     serial_write("\n");
     serial_write("========================================\n");
     serial_write("[BOOT] Kernel initialization complete!\n");
-    serial_write("[BOOT] System ready. Halting...\n");
+    serial_write("[BOOT] System ready.\n");
     serial_write("========================================\n");
     serial_write("\n");
-    serial_write("Next steps:\n");
-    serial_write("  - Implement memory management (paging, allocator)\n");
-    serial_write("  - Set up interrupt handling (IDT, GDT)\n");
-    serial_write("  - Add APIC timer for scheduling\n");
-    serial_write("  - Create process scheduler\n");
-    serial_write("  - Implement syscalls and user mode\n");
-    serial_write("\n");
 
-    // Halt the CPU
+    // Start the interactive shell
+    shell_run();
+
+    // Should never reach here
     hcf();
 }
